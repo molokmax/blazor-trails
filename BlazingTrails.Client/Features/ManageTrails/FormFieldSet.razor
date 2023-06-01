@@ -1,0 +1,14 @@
+﻿<div class="row">
+    <div class="@Width">
+        <div class="form-group">
+            @ChildContent
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public RenderFragment ChildContent { get; set; } = default!;
+    [Parameter]
+    public string Width { get; set; } = "col";
+}
