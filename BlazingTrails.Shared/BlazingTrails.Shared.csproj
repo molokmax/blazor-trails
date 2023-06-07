@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.5.2" />
 	<PackageReference Include="MediatR" Version="9.0.0" />
+	<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.0" />
   </ItemGroup>
 
 </Project>

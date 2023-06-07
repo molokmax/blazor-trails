@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace BlazingTrails.Shared.Features.ManageTrails;
+namespace BlazingTrails.Shared.Features.ManageTrails.Shared;
 
 public class TrailDto
 {
@@ -8,6 +8,8 @@ public class TrailDto
     public string Name { get; set; } = "";
     public string Description { get; set; } = "";
     public string Location { get; set; } = "";
+    public string? Image { get; set; }
+    public ImageAction ImageAction { get; set; }
     public int TimeInMinutes { get; set; }
     public int Length { get; set; }
     public List<RouteInstruction> Route { get; set; } = new List<RouteInstruction>();
@@ -18,6 +20,12 @@ public class TrailDto
         public string Description { get; set; } = "";
     }
 }
+public enum ImageAction
+{
+    None,
+    Add,
+    Remove
+}
 
 public class TrailValidator : AbstractValidator<TrailDto>
 {
@@ -27,6 +35,7 @@ public class TrailValidator : AbstractValidator<TrailDto>
         RuleFor(x => x.Description).NotEmpty().WithMessage("Please enter a description");
         RuleFor(x => x.Location).NotEmpty().WithMessage("Please enter a location");
         RuleFor(x => x.Length).GreaterThan(0).WithMessage("Please enter a length");
+        RuleFor(x => x.TimeInMinutes).GreaterThan(0).WithMessage("Please enter a time");
         RuleFor(x => x.Route).NotEmpty().WithMessage("Please add a route instruction");
         RuleForEach(x => x.Route).SetValidator(new RouteInstructionValidator());
     }

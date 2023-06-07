@@ -13,13 +13,16 @@
 	<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" PrivateAssets="all" Version="6.0.0" />
 	<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.0" />
 	<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.0" />
+	<PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BlazingTrails.Client\BlazingTrails.Client.csproj" />
+    <ProjectReference Include="..\BlazingTrails.Shared\BlazingTrails.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Images\" />
     <Folder Include="Persistence\Data\Migrations\" />
   </ItemGroup>
 

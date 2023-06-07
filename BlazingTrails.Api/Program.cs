@@ -2,6 +2,7 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using System.Reflection;
 
 namespace BlazingTrails.Api
@@ -34,6 +35,12 @@ namespace BlazingTrails.Api
 
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Images")),
+                RequestPath = new PathString("/Images")
+            });
+
 
             app.UseRouting();
 
