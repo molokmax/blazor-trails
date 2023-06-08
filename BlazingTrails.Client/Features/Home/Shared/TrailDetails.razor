@@ -4,7 +4,8 @@
         @if (_activeTrail is not null)
         {
             <div class="drawer-content">
-                <img src="@_activeTrail.Image" />
+                <img src="@(!string.IsNullOrWhiteSpace(_activeTrail.Image) ? $"images/{_activeTrail.Image}" : "https://via.placeholder.com/286x190.jpg?text=No+Image+For+Trail")" class="card-img-top" />
+
                 <div class="trail-details">
                     <h3>@_activeTrail.Name</h3>
                     <h6 class="mb-3 text-muted">

@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BlazingTrails.Client\BlazingTrails.Client.csproj" />
-    <ProjectReference Include="..\BlazingTrails.Shared\BlazingTrails.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

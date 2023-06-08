@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Watch Include="**/*.scss" />
+    <Watch Remove="Features\Home\HomePage.razor.scss" />
     <None Update="**/*.css" Watch="false" />
   </ItemGroup>
 
