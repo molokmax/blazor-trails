@@ -14,6 +14,7 @@
 	<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.3" PrivateAssets="all" />
 	<ProjectReference Include="..\BlazingTrails.Shared\BlazingTrails.Shared.csproj" />
+	<ProjectReference Include="..\BlazingTrails.ComponentLibrary\BlazingTrails.ComponentLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>

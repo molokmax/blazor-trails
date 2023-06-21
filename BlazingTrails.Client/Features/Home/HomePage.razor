@@ -1,5 +1,6 @@
 ﻿@page "/"
 @inject IMediator Mediator
+@inject NavigationManager NavManager
 
 <PageTitle>Blazing Trails</PageTitle>
 
@@ -20,12 +21,36 @@ else
                 Do you have an awesome trail you'd like to share? <a href="add-trail">Add it here</a>.
             </p>
         </div>
-        <div class="grid">
-            @foreach (var trail in _trails)
-            {
+        <ViewSwitcher Items="_trails" Context="trail">
+            <GridTemplate>
                 <TrailCard Trail="trail" OnSelected="HandleTrailSelected" />
-            }
-        </div>
+            </GridTemplate>
+            <HeaderTemplate>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Length</th>
+                <th>Time</th>
+                <th></th>
+            </HeaderTemplate>
+            <RowTemplate>
+                <th scope="col">@trail.Name</th>
+                <td>@trail.Location</td>
+                <td>@(trail.Length)km</td>
+                <td>@trail.TimeFormatted</td>
+                <td class="text-right">
+                    <button @onclick="@(() => HandleTrailSelected(trail))"
+                            title="View"
+                            class="btn btn-primary">
+                        <i class="bi bi-binoculars"></i>
+                    </button>
+                    <button @onclick="@(() => NavManager.NavigateTo($"/edit-trail/{trail.Id}"))"
+                            title="Edit"
+                            class="btn btn-outline-secondary">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                </td>
+            </RowTemplate>
+        </ViewSwitcher>
     }
     else
     {
