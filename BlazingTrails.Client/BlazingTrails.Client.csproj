@@ -20,6 +20,7 @@
   <ItemGroup>
     <Watch Include="**/*.scss" />
     <Watch Remove="Features\Home\HomePage.razor.scss" />
+    <Watch Remove="Features\ManageTrails\Shared\InputRouteMap.razor.scss" />
     <None Update="**/*.css" Watch="false" />
   </ItemGroup>
 

@@ -21,7 +21,7 @@ namespace BlazingTrails.Api.Features.ManageTrails.EditTrail
         public override async Task<ActionResult<bool>> HandleAsync(EditTrailRequest request, CancellationToken cancellationToken = default)
         {
             var trail = await _database.Trails
-                .Include(x => x.Route)
+                // .Include(x => x.Waypoints)
                 .SingleOrDefaultAsync(x => x.Id == request.Trail.Id, cancellationToken: cancellationToken);
             if (trail is null)
             {
@@ -33,12 +33,11 @@ namespace BlazingTrails.Api.Features.ManageTrails.EditTrail
             trail.Location = request.Trail.Location;
             trail.TimeInMinutes = request.Trail.TimeInMinutes;
             trail.Length = request.Trail.Length;
-            trail.Route = request.Trail.Route
-                .Select(ri => new RouteInstruction
-                {
-                    Stage = ri.Stage,
-                    Description = ri.Description,
-                    Trail = trail
+            trail.Waypoints = request.Trail.Waypoints
+                .Select(wp => new Waypoint
+                { 
+                    Latitude = wp.Latitude,
+                    Longitude = wp.Longitude
                 }).ToList();
 
             if (request.Trail.ImageAction == ImageAction.Remove)

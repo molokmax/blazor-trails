@@ -6,7 +6,7 @@ namespace BlazingTrails.Api.Persistence
     public class BlazingTrailsContext : DbContext
 {
         public DbSet<Trail> Trails => Set<Trail>();
-        public DbSet<RouteInstruction> RouteInstructions => Set<RouteInstruction>();
+        public DbSet<Waypoint> Waypoints => Set<Waypoint>();
 
         public BlazingTrailsContext(DbContextOptions<BlazingTrailsContext> options) : base(options) { }
 
@@ -15,7 +15,7 @@ namespace BlazingTrails.Api.Persistence
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new TrailConfig());
-            modelBuilder.ApplyConfiguration(new RouteInstructionConfig());
+            modelBuilder.ApplyConfiguration(new WaypointConfig());
         }
     }
 }
