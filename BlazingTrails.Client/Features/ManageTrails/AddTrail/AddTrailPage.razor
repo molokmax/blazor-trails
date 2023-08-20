@@ -1,5 +1,8 @@
 ﻿@page "/add-trail"
+@attribute [Authorize]
+
 @using BlazingTrails.Shared.Features.ManageTrails.AddTrail;
+
 @inject IMediator Mediator
 
 <PageTitle>Add Trail - Blazing Trails</PageTitle>

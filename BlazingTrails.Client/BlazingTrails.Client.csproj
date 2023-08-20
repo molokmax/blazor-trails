@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
 	<NpmLastInstall>node_modules/.last-install</NpmLastInstall>
+	<UserSecretsId>e42afc08-fea8-4652-bc98-4d72b72aaa31</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,7 +13,9 @@
 	<PackageReference Include="MediatR" Version="9.0.0" />
 	<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
 	<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.3" />
+	<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="7.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.3" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
 	<ProjectReference Include="..\BlazingTrails.Shared\BlazingTrails.Shared.csproj" />
 	<ProjectReference Include="..\BlazingTrails.ComponentLibrary\BlazingTrails.ComponentLibrary.csproj" />
   </ItemGroup>

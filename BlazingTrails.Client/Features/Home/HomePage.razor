@@ -16,11 +16,19 @@ else
 
     @if (_trails.Any())
     {
-        <div class="mb-4">
-            <p class="font-italic text-center">
-                Do you have an awesome trail you'd like to share? <a href="add-trail">Add it here</a>.
-            </p>
-        </div>
+        <AuthorizeView>
+            <Authorized>
+                <div class="mb-4">
+                    <p class="font-italic text-center">Do you have an awesome trail you'd like to share? <a href="add-trail">Add it here</a>.</p>
+                </div>
+             </Authorized>
+             <NotAuthorized>
+                 <div class="mb-4">
+                     <p class="font-italic text-center">Do you have an awesome trail you'd like to share? Please <a href="authentication/login"> log in or sign up</a>.</p>
+                 </div>
+              </NotAuthorized>
+        </AuthorizeView>
+
         <ViewSwitcher Items="_trails" Context="trail">
             <GridTemplate>
                 <TrailCard Trail="trail" OnSelected="HandleTrailSelected" />
@@ -38,15 +46,21 @@ else
                 <td>@(trail.Length)km</td>
                 <td>@trail.TimeFormatted</td>
                 <td class="text-right">
+                    <AuthorizeView>
+                        @if (trail.Owner.Equals(context.User.Identity?.Name, StringComparison.OrdinalIgnoreCase) || context.User.IsInRole("Administrator"))
+                        {
+                        <button @onclick="@(() => NavManager.NavigateTo($"/edit-trail/{trail.Id}"))"
+                                title="Edit"
+                                class="btn btn-outline-secondary">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        }
+                    </AuthorizeView>
+
                     <button @onclick="@(() => HandleTrailSelected(trail))"
                             title="View"
                             class="btn btn-primary">
                         <i class="bi bi-binoculars"></i>
-                    </button>
-                    <button @onclick="@(() => NavManager.NavigateTo($"/edit-trail/{trail.Id}"))"
-                            title="Edit"
-                            class="btn btn-outline-secondary">
-                        <i class="bi bi-pencil"></i>
                     </button>
                 </td>
             </RowTemplate>
@@ -59,9 +73,18 @@ else
                 <path fill-rule="evenodd" d="M8 0a.5.5 0 0 1 .416.223l3 4.5A.5.5 0 0 1 11 5.5h-.098l2.022 3.235a.5.5 0 0 1-.424.765h-.191l1.638 3.276a.5.5 0 0 1-.447.724h-11a.5.5 0 0 1-.447-.724L3.69 9.5H3.5a.5.5 0 0 1-.424-.765L5.098 5.5H5a.5.5 0 0 1-.416-.777l3-4.5A.5.5 0 0 1 8 0zM5.934 4.5H6a.5.5 0 0 1 .424.765L4.402 8.5H4.5a.5.5 0 0 1 .447.724L3.31 12.5h9.382l-1.638-3.276A.5.5 0 0 1 11.5 8.5h.098L9.576 5.265A.5.5 0 0 1 10 4.5h.066L8 1.401 5.934 4.5z" />
                 <path d="M7 13.5h2V16H7v-2.5z" />
             </svg>
-            <h3 class="text-muted font-weight-light">
-                We currently don't have any trails, <a href="add-trail">why not add one?</a>
-            </h3>
+            <AuthorizeView>
+                <Authorized>
+                    <div class="text-muted font-weight-light">
+                        We currently don't have any trails, <a href="add-trail">why not add one?</a>
+                    </div>
+                </Authorized>
+                <NotAuthorized>
+                    <div class="text-muted font-weight-light">
+                        We currently don't have any trails. Please <a href="authentication/login"> log in or sign up</a>.
+                    </div>
+                </NotAuthorized>
+            </AuthorizeView>
         </div>
     }
 }
@@ -84,6 +107,7 @@ else
                     Description = x.Description,
                     Location = x.Location,
                     Length = x.Length,
+                    Owner = x.Owner,
                     TimeInMinutes = x.TimeInMinutes,
                     Waypoints = x.Waypoints.Select(wp => new BlazingTrails.ComponentLibrary.Map.LatLong( wp.Latitude, wp.Longitude)).ToList()
                 });
