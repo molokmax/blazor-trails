@@ -1,8 +1,11 @@
 ﻿@using BlazingTrails.Client.Validation
 @using BlazingTrails.ComponentLibrary.Map
 
+@inject AppState AppState
+
 <EditForm EditContext="_editContext" OnValidSubmit="SubmitForm">
     <FluentValidationValidator />
+    <FormStateTracker />
 
     <FormSection Title="Basic Details"
                  HelpText="This information is used to identify the trail and can be searched to help hikers find it.">
@@ -97,6 +100,8 @@
 
     public void ResetForm()
     {
+        AppState.NewTrailState.ClearTrail();
+
         _trail = new TrailDto();
         _editContext = new EditContext(_trail);
         _editContext.SetFieldCssClassProvider(new BootstrapCssClassProvider());
@@ -105,10 +110,7 @@
 
     protected override void OnParametersSet()
     {
-        _editContext = new EditContext(_trail);
-        _editContext.SetFieldCssClassProvider(new BootstrapCssClassProvider());
-
-        if (Trail != null)
+        if (Trail is not null)
         {
             _trail.Id = Trail.Id;
             _trail.Name = Trail.Name;
@@ -118,10 +120,16 @@
             _trail.ImageAction = ImageAction.None;
             _trail.Length = Trail.Length;
             _trail.TimeInMinutes = Trail.TimeInMinutes;
-
             _trail.Waypoints.Clear();
             _trail.Waypoints.AddRange(Trail.Waypoints.Select(wp => new TrailDto.WaypointDto(wp.Latitude, wp.Longitude)));
         }
+        else
+        {
+            _trail = AppState.NewTrailState.GetTrail();
+        }
+
+        _editContext = new EditContext(_trail);
+        _editContext.SetFieldCssClassProvider(new BootstrapCssClassProvider());
     }
 
     private void LoadTrailImage(InputFileChangeEventArgs e)

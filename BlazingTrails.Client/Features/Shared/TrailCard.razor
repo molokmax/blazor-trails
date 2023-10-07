@@ -1,4 +1,6 @@
-﻿@inject NavigationManager NavManager
+﻿@using BlazingTrails.Client.Features.ManageTrails.Shared
+
+@inject NavigationManager NavManager
 
 <div class="card shadow" style="width: 18rem;">
     <img src="@(!string.IsNullOrWhiteSpace(Trail.Image) ? $"images/{Trail.Image}" : "https://via.placeholder.com/286x190.jpg?text=No+Image+For+Trail")" class="card-img-top" />
@@ -22,6 +24,7 @@
             @onclick="@(async () => await OnSelected.InvokeAsync(Trail))">
             <i class="bi bi-binoculars"></i>
         </button>
+        <FavoriteButton Trail="Trail" />
         <AuthorizeView>
             @if (Trail.Owner.Equals(context.User.Identity?.Name, StringComparison.OrdinalIgnoreCase) || context.User.IsInRole("Administrator"))
             {
