@@ -1,0 +1,52 @@
+﻿@using BlazingTrails.Client.Features.Home;
+
+@inherits TestContext
+
+@code
+{
+    private readonly TestAuthorizationContext _authContext;
+    private readonly Fixture _fixture = new();
+
+    public TrailCardTests()
+    {
+        this.AddBlazoredLocalStorage();
+        this.Services.AddScoped<AppState>();
+        _authContext = this.AddTestAuthorization();
+    }
+
+    [Fact]
+    public void RendersEditButton_When_UserIsAuthorized()
+    {
+        // Подготовка;
+        var authorizedUser = "Test User";
+        _authContext.SetAuthorized(authorizedUser);
+        var testTrail = _fixture.Create<Trail>();
+        testTrail.Owner = authorizedUser;
+
+        // Действие;
+        var cut = Render(@<TrailCard Trail="testTrail" />);
+
+        // Проверка;
+        var editButton = cut.Find("button[title=\"Edit\"]");
+        Assert.NotNull(editButton);
+    }
+
+    [Fact]
+    public void RendersEditButton_When_UserIsAdmin()
+    {
+        // Подготовка;
+        var authorizedUser = "Admin User";
+        _authContext.SetAuthorized(authorizedUser);
+        _authContext.SetRoles("Administrator");
+        var testTrail = _fixture.Create<Trail>();
+
+        // Действие;
+        var cut = Render(@<TrailCard Trail="testTrail" />);
+
+        // Проверка;
+        var editButton = cut.Find("button[title=\"Edit\"]");
+        Assert.NotNull(editButton);
+    }
+
+}
+

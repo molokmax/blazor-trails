@@ -1,0 +1,84 @@
+﻿@using BlazingTrails.Client.Features.Home;
+
+@inherits TestContext
+
+@code
+{
+    private readonly Fixture _fixture = new();
+
+    public FavoriteButtonTests()
+    {
+        this.AddBlazoredLocalStorage();
+        this.Services.AddScoped<AppState>();
+    }
+
+    [Fact]
+    public void RendersAddFavoriteButton_When_TrailIsNotFavorited()
+    {
+        // Подготовка;
+        var testTrail = _fixture.Create<Trail>();
+
+        // Действие;
+        var cut = Render(@<FavoriteButton Trail="testTrail" />);
+
+        // Проверка;
+        cut.MarkupMatches(
+            @<button class="btn btn-outline-primary ml-1" title="Favorite">
+                <i class="bi bi-heart"></i>
+            </button>
+        );
+    }
+
+    [Fact]
+    public async Task RendersRemoveFavoriteButton_When_TrailIsFavorited()
+    {
+        // Подготовка;
+        var testTrail = _fixture.Create<Trail>();
+
+        var appState = this.Services.GetRequiredService<AppState>();
+        await appState.FavoriteTrailsState.AddFavorite(testTrail);
+
+        // Действие;
+        var cut = Render(@<FavoriteButton Trail="testTrail" />);
+
+        // Проверка;
+        cut.MarkupMatches(
+            @<button class="btn btn-outline-primary ml-1" title="Favorite">
+                <i class="bi bi-heart-fill"></i>
+            </button>
+        );
+    }
+
+    [Fact]
+    public void AddTrailToFavorites_When_TrailIsNotAFavorite()
+    {
+        // Подготовка;
+        var testTrail = _fixture.Create<Trail>();
+        var cut = Render(@<FavoriteButton Trail="testTrail" />);
+        var button = cut.Find("button");
+
+        // Действие;
+        button.Click();
+
+        // Проверка;
+        var appState = this.Services.GetRequiredService<AppState>();
+        Assert.True(appState.FavoriteTrailsState.IsFavorite(testTrail));
+    }
+
+    [Fact]
+    public async Task RemoveTrailFromFavorites_When_TrailIsFavorite()
+    {
+        // Подготовка;
+        var testTrail = _fixture.Create<Trail>();
+        var appState = this.Services.GetRequiredService<AppState>();
+        await appState.FavoriteTrailsState.AddFavorite(testTrail);
+        var cut = Render(@<FavoriteButton Trail="testTrail" />);
+        var button = cut.Find("button");
+
+        // Действие;
+        button.Click();
+
+        // Проверка;
+        Assert.False(appState.FavoriteTrailsState.IsFavorite(testTrail));
+    }
+}
